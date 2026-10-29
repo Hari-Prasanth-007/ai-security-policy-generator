@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Security Policy Generator</title>
+<style>
+:root { font-family: Arial, sans-serif; color:#172033; background:#f3f6fb; }
+body { margin:0; }
+header { background:#142b4a; color:white; padding:28px 18px; }
+header div, main { max-width:1000px; margin:auto; }
+h1 { margin:0 0 8px; font-size:clamp(24px,4vw,34px); }
+header p { margin:0; color:#dce8f7; line-height:1.5; }
+main { padding:22px 16px 40px; }
+.card { background:white; border:1px solid #e0e6ef; border-radius:14px; padding:22px; margin-bottom:20px; box-shadow:0 5px 20px #1720330a; }
+h2 { margin-top:0; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+label { display:block; font-weight:600; margin-bottom:7px; }
+input[type=text], select { width:100%; box-sizing:border-box; padding:11px; border:1px solid #bdc8d8; border-radius:8px; background:white; font-size:15px; }
+.checks { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; }
+.checks label { font-weight:normal; display:flex; align-items:center; gap:9px; padding:10px; background:#f7f9fc; border-radius:8px; margin:0; }
+button { border:0; border-radius:8px; padding:12px 17px; font-size:15px; font-weight:700; cursor:pointer; }
+.primary { color:white; background:#1764c0; }
+.secondary { color:#16365d; background:#e6eef8; }
+.actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+textarea { width:100%; box-sizing:border-box; min-height:600px; padding:15px; border:1px solid #bdc8d8; border-radius:9px; font:14px/1.55 ui-monospace,Consolas,monospace; }
+.note { color:#56657a; font-size:14px; line-height:1.5; }
+footer { text-align:center; padding:18px; color:#56657a; font-size:13px; }
+</style>
+</head>
+<body>
+<header><div>
+<h1>AI Security Policy Generator</h1>
+<p>Create a practical starter security policy for a small organisation in a few steps.</p>
+</div></header>
+<main>
+<section class="card">
+<h2>Organisation details</h2>
+<form method="post">
+<div class="grid">
+<div><label for="org_name">Organisation name</label><input id="org_name" name="org_name" type="text" maxlength="200" placeholder="e.g. ABC Small Business" required></div>
+<div><label for="industry">Industry / sector</label><input id="industry" name="industry" type="text" maxlength="200" placeholder="e.g. Retail, education, services" required></div>
+<div><label for="employees">Number of employees</label><select id="employees" name="employees"><option>1–10</option><option>11–25</option><option>26–50</option><option>51–100</option><option>100+</option></select></div>
+</div>
+<h3>Types of information handled</h3>
+<div class="checks">
+<label><input type="checkbox" name="data_types" value="Customer information"> Customer information</label>
+<label><input type="checkbox" name="data_types" value="Employee information"> Employee information</label>
+<label><input type="checkbox" name="data_types" value="Financial records"> Financial records</label>
+<label><input type="checkbox" name="data_types" value="Intellectual property"> Intellectual property</label>
+<label><input type="checkbox" name="data_types" value="Public information"> Public information</label>
+</div>
+<h3>Security priorities</h3>
+<div class="checks">
+<label><input type="checkbox" name="needs" value="Passwords and accounts" checked> Passwords and accounts</label>
+<label><input type="checkbox" name="needs" value="Data protection" checked> Data protection</label>
+<label><input type="checkbox" name="needs" value="Email and phishing" checked> Email and phishing</label>
+<label><input type="checkbox" name="needs" value="Backups and recovery" checked> Backups and recovery</label>
+<label><input type="checkbox" name="needs" value="Incident response" checked> Incident response</label>
+<label><input type="checkbox" name="needs" value="Remote work"> Remote work</label>
+<label><input type="checkbox" name="needs" value="AI tool usage"> AI tool usage</label>
+</div>
+<div class="actions"><button class="primary" type="submit">Generate Security Policy</button></div>
+</form>
+</section>
+{% if policy %}
+<section class="card">
+<h2>Generated policy</h2>
+<p class="note">Review and customise this template before adopting it. You can edit the text below before downloading.</p>
+<textarea id="policy" aria-label="Generated security policy">{{ policy }}</textarea>
+<div class="actions">
+<form method="post" action="/download" id="downloadForm">
+<input type="hidden" name="policy" id="downloadText">
+<button class="primary" type="submit" onclick="document.getElementById('downloadText').value=document.getElementById('policy').value">Download as TXT</button>
+</form>
+<button class="secondary" type="button" onclick="navigator.clipboard.writeText(document.getElementById('policy').value).then(()=>alert('Policy copied.'))">Copy policy</button>
+<button class="secondary" type="button" onclick="window.print()">Print / Save as PDF</button>
+</div>
+</section>
+{% endif %}
+</main>
+<footer>Educational starter project · Human review is required before real-world use.</footer>
+</body>
+         </html>
